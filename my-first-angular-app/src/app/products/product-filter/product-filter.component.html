@@ -1,0 +1,11 @@
+
+<div class="filter">
+  <span class="filter__label">Category:</span>
+  <div class="filter__chips">
+    @for (cat of categories; track cat) {
+      <button class="chip" [class.chip--active]="selected() === cat" (click)="select(cat)">
+        {{ cat }}
+      </button>
+    }
+  </div>
+</div>

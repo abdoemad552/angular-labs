@@ -1,0 +1,36 @@
+<section class="shop">
+  <header class="shop__header">
+    <div>
+      <h1 class="shop__title">Our Collection</h1>
+      <p class="shop__subtitle">{{ filteredProducts().length }} products found</p>
+    </div>
+
+    <div class="shop__controls">
+      <app-product-filter
+        [categories]="categories"
+        (categoryChange)="onCategoryChange($event)"
+      />
+    </div>
+  </header>
+
+  @if (cartMessage()) {
+    <div class="toast">{{ cartMessage() }}</div>
+  }
+
+  @if (filteredProducts().length === 0) {
+    <div class="empty">
+      <span class="empty__icon">🛍️</span>
+      <p>No products in this category.</p>
+    </div>
+  } @else {
+    <div class="shop__grid">
+      @for (product of filteredProducts(); track product.id) {
+        <app-product-card
+          [product]="product"
+          (addToCart)="onAddToCart($event)"
+          (productClicked)="console.log($event + ' was clicked...')"
+        />
+      }
+    </div>
+  }
+</section>

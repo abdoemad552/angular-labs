@@ -1,0 +1,48 @@
+<div class="card" [class.card--out-of-stock]="!product.inStock" (click)="productClicked.emit(product.name)">
+
+  <div class="card__image-wrap">
+    <img [src]="product.image" class="card__image" />
+
+    @if (product.badge) {
+      <div class="card__badge">
+        <app-product-badge [label]="product.badge" />
+      </div>
+    }
+
+    <button
+      class="card__wishlist"
+      [class.card__wishlist--active]="wishlisted()"
+      (click)="toggleWishlist()"
+      [attr.aria-label]="wishlisted() ? 'Remove from wishlist' : 'Add to wishlist'">
+      {{ wishlisted() ? '♥' : '♡' }}
+    </button>
+  </div>
+
+  <div class="card__body">
+    <p class="card__category">{{ product.category }}</p>
+    <h3 class="card__name">{{ product.name }}</h3>
+
+    <div class="card__rating">
+      @for (star of stars(); track $index) {
+        <span class="star" [class.star--filled]="star">★</span>
+      }
+      <span class="card__reviews">({{ product.reviewCount }})</span>
+    </div>
+
+    <div class="card__footer">
+      <div class="card__prices">
+        <span class="card__price">{{ product.price | currency }}</span>
+        @if (product.originalPrice) {
+          <span class="card__original-price">{{ product.originalPrice | currency }}</span>
+          <span class="card__discount">-{{ discountPercent() }}%</span>
+        }
+      </div>
+
+      @if (product.inStock) {
+        <button class="card__btn" (click)="addToCart.emit(product)">Add to Cart</button>
+      } @else {
+        <button class="card__btn card__btn--disabled" disabled>Out of Stock</button>
+      }
+    </div>
+  </div>
+</div>
