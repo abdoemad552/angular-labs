@@ -1,12 +1,25 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { Product } from './models/product.model';
+import { ProductsListComponent } from './products/products-list/products-list.component';
+import { ProductService } from './services/product.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [ProductsListComponent, ProductsListComponent],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
-export class App {
-  protected readonly title = signal('lab-2');
+export class App implements OnInit {
+  products = signal<Product[]>([]);
+
+  private productService = inject(ProductService);
+
+  ngOnInit() {
+    this.productService.getAllProducts().subscribe({
+      next: (response) => {
+        console.log(response);
+        this.products.set(response.products);
+      },
+    });
+  }
 }

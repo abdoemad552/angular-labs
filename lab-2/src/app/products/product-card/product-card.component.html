@@ -1,0 +1,27 @@
+<div class="border border-gray-200 bg-white flex flex-col" (click)="onCardClicked()">
+
+  <img [src]="product().images[0]"
+       class="w-full h-48 object-cover" />
+
+  <div class="p-3 flex flex-col gap-2 flex-1">
+    <h3 class="text-sm font-semibold text-gray-800">{{ product().title }}</h3>
+
+    <div class="flex-1"></div>
+
+    <div class="pt-2 border-t border-gray-100 flex items-center justify-between">
+      <div class="flex items-baseline gap-1.5">
+        <span class="font-bold text-gray-900">{{ discountedPrice() | currency }}</span>
+        @if (product().discountPercentage) {
+          <span class="text-xs text-gray-400 line-through">{{ product().price | currency }}</span>
+          <span class="text-xs text-red-500 font-medium">-{{ product().discountPercentage }}%</span>
+        }
+      </div>
+
+      <button
+        class="text-xs px-3 py-1.5 bg-gray-900 text-white hover:bg-gray-700"
+        (click)="onAddToCart()">
+        Add
+      </button>
+    </div>
+  </div>
+</div>
