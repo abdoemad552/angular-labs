@@ -1,0 +1,154 @@
+<div class="max-w-2xl mx-auto px-4 py-8">
+
+  <a routerLink="/" class="text-sm text-gray-500 hover:text-gray-800 flex items-center gap-1 mb-6">
+    ← Back to products
+  </a>
+
+  <div class="mb-6">
+    <h1 class="text-xl font-bold text-gray-900">
+      {{ isEditMode() ? 'Edit Product' : 'Add Product' }}
+    </h1>
+    <p class="text-sm text-gray-500 mt-0.5">
+      {{ isEditMode() ? 'Update the product details below.' : 'Fill in the details to add a new product.' }}
+    </p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <div class="bg-white border border-gray-200 divide-y divide-gray-100">
+
+      <div class="p-4 flex flex-col gap-1">
+        <label class="text-xs font-semibold text-gray-600 uppercase tracking-wide">
+          Name <span class="text-red-500">*</span>
+        </label>
+        <input
+          formControlName="title"
+          type="text"
+          placeholder="Product name"
+          class="text-sm border px-3 py-2 w-full outline-none focus:border-gray-400"
+          [class.border-red-400]="isInvalid(f.title)"
+          [class.border-gray-200]="!isInvalid(f.title)"
+        />
+        @if (isInvalid(f.title)) {
+          @if (f.title.errors?.['required']) {
+            <p class="text-xs text-red-500">Name is required.</p>
+          } @else if (f.title.errors?.['minlength']) {
+            <p class="text-xs text-red-500">Name must be at least 3 characters.</p>
+          }
+        }
+      </div>
+
+      <div class="p-4 flex flex-col gap-1">
+        <label class="text-xs font-semibold text-gray-600 uppercase tracking-wide">
+          Description <span class="text-red-500">*</span>
+        </label>
+        <textarea
+          formControlName="description"
+          rows="3"
+          placeholder="Product description"
+          class="text-sm border px-3 py-2 w-full outline-none focus:border-gray-400 resize-none"
+          [class.border-red-400]="isInvalid(f.description)"
+          [class.border-gray-200]="!isInvalid(f.description)"></textarea>
+        @if (isInvalid(f.description)) {
+          @if (f.description.errors?.['required']) {
+            <p class="text-xs text-red-500">Description is required.</p>
+          } @else if (f.description.errors?.['minlength']) {
+            <p class="text-xs text-red-500">Description must be at least 10 characters.</p>
+          }
+        }
+      </div>
+
+      <div class="p-4 flex flex-col gap-1">
+        <label class="text-xs font-semibold text-gray-600 uppercase tracking-wide">
+          Price <span class="text-red-500">*</span>
+        </label>
+        <input
+          formControlName="price"
+          type="number"
+          min="0"
+          step="0.01"
+          placeholder="0.00"
+          class="text-sm border px-3 py-2 w-full outline-none focus:border-gray-400"
+          [class.border-red-400]="isInvalid(f.price)"
+          [class.border-gray-200]="!isInvalid(f.price)"
+        />
+        @if (isInvalid(f.price)) {
+          @if (f.price.errors?.['required']) {
+            <p class="text-xs text-red-500">Price is required.</p>
+          } @else if (f.price.errors?.['min']) {
+            <p class="text-xs text-red-500">Price must be greater than 0.</p>
+          }
+        }
+      </div>
+
+      <div class="p-4 flex flex-col gap-1">
+        <label class="text-xs font-semibold text-gray-600 uppercase tracking-wide">
+          Discount Percentage
+          <span class="text-gray-400 font-normal normal-case ml-1">(optional — shown as crossed out)</span>
+        </label>
+        <input
+          formControlName="discountPercentage"
+          type="number"
+          min="0"
+          max="100"
+          step="0.01"
+          placeholder="0.00"
+          class="text-sm border px-3 py-2 w-full outline-none focus:border-gray-400"
+          [class.border-red-400]="isInvalid(f.discountPercentage)"
+          [class.border-gray-200]="!isInvalid(f.discountPercentage)"
+        />
+        @if (isInvalid(f.discountPercentage)) {
+          @if (f.discountPercentage.errors?.['min']) {
+            <p class="text-xs text-red-500">Discount percentage must be greater than 0.</p>
+          } @else if (f.discountPercentage.errors?.['max']) {
+            <p class="text-xs text-red-500">Discount percentage must be less than or equal 100.</p>
+          }
+        }
+      </div>
+
+      <div class="p-4 flex flex-col gap-1">
+        <label class="text-xs font-semibold text-gray-600 uppercase tracking-wide">
+          Image URL <span class="text-red-500">*</span>
+        </label>
+        <input
+          formControlName="image"
+          type="text"
+          placeholder="https://..."
+          class="text-sm border px-3 py-2 w-full outline-none focus:border-gray-400"
+          [class.border-red-400]="isInvalid(f.image)"
+          [class.border-gray-200]="!isInvalid(f.image)"
+        />
+        @if (isInvalid(f.image)) {
+          @if (f.image.errors?.['required']) {
+            <p class="text-xs text-red-500">Image URL is required.</p>
+          }
+        }
+
+        <!-- Image preview -->
+        @if (f.image.value && !isInvalid(f.image)) {
+          <img
+            [src]="f.image.value"
+            alt="Preview"
+            class="mt-2 h-32 w-full object-cover border border-gray-200"
+          />
+        }
+      </div>
+
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center justify-end gap-3 mt-4">
+      <a routerLink="/"
+         class="text-sm px-4 py-2 border border-gray-300 text-gray-600 hover:bg-gray-50">
+        Cancel
+      </a>
+      <button
+        type="submit"
+        class="text-sm px-6 py-2 bg-gray-900 text-white hover:bg-gray-700"
+        [disabled]="form.invalid && form.touched"
+        [class.opacity-50]="form.invalid && form.touched">
+        {{ isEditMode() ? 'Save Changes' : 'Add Product' }}
+      </button>
+    </div>
+
+  </form>
+</div>

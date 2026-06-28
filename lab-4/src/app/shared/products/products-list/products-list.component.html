@@ -1,0 +1,23 @@
+<div class="max-w-7xl mx-auto px-4 py-8">
+
+  <div class="mb-6">
+    <h1 class="text-xl font-bold text-gray-900">Products</h1>
+    <p class="text-sm text-gray-500 mt-0.5">{{ products().length }} items</p>
+  </div>
+
+  <div class="flex gap-6 items-start">
+
+    <div class="flex-1">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        @for (product of products(); track product.id) {
+          <app-product-card [product]="product" zoomHover>
+          </app-product-card>
+        }
+      </div>
+    </div>
+
+    <div class="w-72 shrink-0 sticky top-4">
+      <app-shopping-cart/>
+    </div>
+  </div>
+</div>

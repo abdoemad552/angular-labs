@@ -1,0 +1,23 @@
+<header class="bg-white border-b border-gray-200">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+
+    <a routerLink="/" class="font-bold text-gray-900 text-sm tracking-wide">
+      Shopping
+    </a>
+
+    <nav class="flex items-center gap-6">
+      <a routerLink="/"
+         routerLinkActive="text-gray-900 font-semibold"
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="text-sm text-gray-500 hover:text-gray-900">
+        Products
+      </a>
+      <a routerLink="/product/add"
+         routerLinkActive="text-gray-900 font-semibold"
+         class="text-sm px-3 py-1.5 border border-gray-300 text-gray-600 hover:bg-gray-50">
+        + Add Product
+      </a>
+    </nav>
+
+  </div>
+</header>
